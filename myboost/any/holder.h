@@ -4,7 +4,11 @@
 namespace mb{
 
 	mb_interface IHolder{
-	virtual ~IHolder(){}
+		virtual ~IHolder(){}
+
+		virtual const std::type_info& type() const = 0;
+
+		virtual IHolder* clone() const = 0;
 	};
 
 	template<typename ValueType>
@@ -14,7 +18,17 @@ namespace mb{
 
 		}
 
-	private:
+		virtual const std::type_info& type() const {
+			return typeid(ValueType);
+		}
+
+		virtual IHolder* clone() const {
+			return new Holder(value_);
+		}
+
+	public:
 		ValueType value_;
 	};
+
+	
 }
